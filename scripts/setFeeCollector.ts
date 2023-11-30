@@ -1,12 +1,17 @@
 import { ethers } from 'ethers'
 import { abi as ArbOwner__abi } from '@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbOwner.sol/ArbOwner.json'
+import { config as dotenvConfig } from 'dotenv'
+import { resolve } from 'path'
+
+dotenvConfig({ path: resolve(__dirname, '../.env') })
 
 async function main() {
   // Read the environment variables
-  const privateKey = ''
-  const L3_RPC_URL = 'http://localhost:8449'
-  const networkFeeReceiver = ''
-  if (!privateKey || !L3_RPC_URL) {
+  const privateKey = process.env.PRIVATE_KEY
+  const L3_RPC_URL = process.env.L3_RPC_URL
+  const networkFeeReceiver = process.env.NetworkFeeReceiver
+  console.log('Set fee collectionn to: ', networkFeeReceiver)
+  if (!privateKey || !L3_RPC_URL || !networkFeeReceiver) {
     throw new Error('Required environment variable not found')
   }
 

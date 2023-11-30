@@ -17,6 +17,7 @@
     "hardhat": "^2.14.1",
     "hardhat-ethers": "^1.0.1",
     "prettier": "^2.3.2",
+    "dotenv": "^16.0.3",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.3"
   },
