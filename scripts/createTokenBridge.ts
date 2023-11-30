@@ -245,7 +245,10 @@ export const createERC20Bridge = async (
       },
     },
   }
-  fs.writeFileSync('outputInfo.json', JSON.stringify(outputInfo, null, 2))
+  fs.writeFileSync(
+    './output/outputInfo.json',
+    JSON.stringify(outputInfo, null, 2)
+  )
 
   console.log('Done!')
 }
