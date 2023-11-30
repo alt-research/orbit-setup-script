@@ -1,37 +1,5 @@
 import { ethers } from 'ethers'
-import { L3Config } from './l3ConfigType'
 import { abi as ArbOwner__abi } from '@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbOwner.sol/ArbOwner.json'
-import fs from 'fs'
-import { ethOrERC20Deposit } from './nativeTokenDeposit'
-import { createERC20Bridge } from './createTokenBridge'
-import { l3Configuration } from './l3Configuration'
-import { defaultRunTimeState, RuntimeState } from './runTimeState'
-import { transferOwner } from './transferOwnership'
-// Delay function
-function delay(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-function checkRuntimeStateIntegrity(rs: RuntimeState) {
-  if (!rs.chainId) {
-    rs.chainId = defaultRunTimeState.chainId
-  }
-  if (!rs.etherSent) {
-    rs.etherSent = defaultRunTimeState.etherSent
-  }
-  if (!rs.nativeTokenDeposit) {
-    rs.nativeTokenDeposit = defaultRunTimeState.nativeTokenDeposit
-  }
-  if (!rs.tokenBridgeDeployed) {
-    rs.tokenBridgeDeployed = defaultRunTimeState.tokenBridgeDeployed
-  }
-  if (!rs.l3config) {
-    rs.l3config = defaultRunTimeState.l3config
-  }
-  if (!rs.transferOwnership) {
-    rs.transferOwnership = defaultRunTimeState.transferOwnership
-  }
-}
 
 async function main() {
   // Read the environment variables
