@@ -65,17 +65,15 @@ async function main() {
   console.log('admin role: ', adminRole)
   console.log('executor role: ', executorRole)
 
-  // grant both roles to the new owner
-  const receipt = upgradeExecutor.revokeRole(adminRole, newOwner).wait()
-  console.log(
-    'Transaction complete, grant admin role on TX:',
-    receipt.transactionHash
+  const ABI = ['function revokeRole(bytes32 role, address account)']
+  const iface = new ethers.utils.Interface(ABI)
+  const data = iface.encodeFunctionData('revokeRole', [executorRole, newOwner])
+  console.log('data: ', data)
+  const receipt = await upgradeExecutor.executeCall(
+    executorContractAddress,
+    data
   )
-  const receipt2 = upgradeExecutor.revokeRole(executorRole, newOwner).wait()
-  console.log(
-    'Transaction complete, grant executor role on TX:',
-    receipt2.transactionHash
-  )
+  console.log('Transaction complete, revoke executor role on TX:', receipt.hash)
 }
 
 // Run the script
