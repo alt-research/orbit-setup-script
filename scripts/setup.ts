@@ -37,8 +37,16 @@ async function main() {
   const privateKey = process.env.PRIVATE_KEY
   const L2_RPC_URL = process.env.L2_RPC_URL
   const L3_RPC_URL = process.env.L3_RPC_URL
+  const INITIAL_FUND_AMOUNT = process.env.INITIAL_FUND_AMOUNT
+  const STAKE_AMOUNT = process.env.STAKE_AMOUNT
 
-  if (!privateKey || !L2_RPC_URL || !L3_RPC_URL) {
+  if (
+    !privateKey ||
+    !L2_RPC_URL ||
+    !L3_RPC_URL ||
+    !INITIAL_FUND_AMOUNT ||
+    !STAKE_AMOUNT
+  ) {
     throw new Error('Required environment variable not found')
   }
 
@@ -91,7 +99,7 @@ async function main() {
       console.log('Funding batch-poster accounts on parent chain with 0.3 ETH')
       const tx1 = await signer.sendTransaction({
         to: config.batchPoster,
-        value: ethers.utils.parseEther('0.3'),
+        value: ethers.utils.parseEther(INITIAL_FUND_AMOUNT),
       })
       console.log(`Transaction hash on parent chain: ${tx1.hash}`)
       const receipt1 = await tx1.wait()
@@ -105,7 +113,7 @@ async function main() {
       console.log('Funding staker accounts on parent chain with 0.3 ETH')
       const tx2 = await signer.sendTransaction({
         to: config.staker,
-        value: ethers.utils.parseEther('0.3'),
+        value: ethers.utils.parseEther(STAKE_AMOUNT),
       })
       console.log(`Transaction hash on parent chain: ${tx2.hash}`)
       const receipt2 = await tx2.wait()
