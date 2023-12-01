@@ -37,8 +37,14 @@ async function main() {
   const privateKey = process.env.PRIVATE_KEY
   const L2_RPC_URL = process.env.L2_RPC_URL
   const L3_RPC_URL = process.env.L3_RPC_URL
+  const INITIAL_FUND_AMOUNT_CREATOR = process.env.INITIAL_FUND_AMOUNT_CREATOR
 
-  if (!privateKey || !L2_RPC_URL || !L3_RPC_URL) {
+  if (
+    !privateKey ||
+    !L2_RPC_URL ||
+    !L3_RPC_URL ||
+    !INITIAL_FUND_AMOUNT_CREATOR
+  ) {
     throw new Error('Required environment variable not found')
   }
 
@@ -131,7 +137,11 @@ async function main() {
       while (true) {
         depositCheckTime++
         const newBalance = await L3Provider.getBalance(config.chainOwner)
-        if (newBalance.sub(oldBalance).gte(ethers.utils.parseEther('0.4'))) {
+        if (
+          newBalance
+            .sub(oldBalance)
+            .gte(ethers.utils.parseEther(INITIAL_FUND_AMOUNT_CREATOR))
+        ) {
           console.log(
             'Balance of your account on Orbit chain increased by the native token you have just sent.'
           )
