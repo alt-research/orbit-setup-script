@@ -46,7 +46,7 @@ async function main() {
     !privateKey ||
     !L2_RPC_URL ||
     !L3_RPC_URL ||
-    !INITIAL_FUND_AMOUNT_CREATOR
+    !INITIAL_FUND_AMOUNT_CREATOR ||
     !INITIAL_FUND_AMOUNT_BATCH_POSTER ||
     !INITIAL_FUND_AMOUNT_STAKER
   ) {
