@@ -1,22 +1,18 @@
 import { ethers } from 'ethers'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 import UpgradeExecutor from '@arbitrum/nitro-contracts/build/contracts/src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json'
-import { config as dotenvConfig } from 'dotenv'
-import { resolve } from 'path'
 import {
   TOKEN_BRIDGE_CREATOR_Arb_Goerli,
   TOKEN_BRIDGE_CREATOR_Arb_Sepolia,
 } from './createTokenBridge'
 import { getSigner } from './erc20TokenBridgeDeployment'
 
-dotenvConfig({ path: resolve(__dirname, '../.env') })
-
 async function main() {
   // Read the environment variables
   const privateKey = process.env.PRIVATE_KEY
   const L2_RPC_URL = process.env.L2_RPC_URL
   const L3_RPC_URL = process.env.L3_RPC_URL
-  const newOwner = process.env.NewOwner
+  const newOwner = process.env.NEW_OWNER
   if (!privateKey || !L3_RPC_URL || !newOwner) {
     throw new Error('Required environment variable not found')
   }
