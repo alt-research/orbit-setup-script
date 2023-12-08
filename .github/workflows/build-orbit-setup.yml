@@ -45,6 +45,6 @@ jobs:
         with:
           context: ${{ matrix.context }}
           push: true
-          tags: ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:${{ github.sha }} , ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:${{ env.SHORT_SHA }} , ${{ env.ECR_REPO }}:codeupdate-${{ env.REF_NAME }} , ${{ env.ECR_REPO }}:codeupdate-${{ env.REF_NAME }}-${{ env.SHORT_SHA }} , ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:latest
+          tags: ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:${{ github.sha }} , ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:${{ env.SHORT_SHA }} , ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:${{ env.REF_NAME }} , ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:${{ env.REF_NAME }}-${{ env.SHORT_SHA }} , ${{ secrets.ECR_REGISTRY }}/${{ matrix.image }}:latest
           file: ${{ matrix.dockerfile }}
           provenance: false
