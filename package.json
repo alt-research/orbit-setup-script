@@ -23,6 +23,7 @@
   },
   "scripts": {
     "setup": "ts-node scripts/setup.ts",
+    "retryableSender": "ts-node scripts/getRetryableSenderAddr.ts",
     "setFeeCollector": "ts-node scripts/setFeeCollector.ts",
     "grantRoles": "ts-node scripts/grantRoles.ts",
     "revokeRoles": "ts-node scripts/revokeRoles.ts",
