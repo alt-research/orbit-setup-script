@@ -100,7 +100,7 @@ async function main() {
     //////////////////////////////////////////////
     if (!rs.etherSent.batchPoster) {
       console.log(
-        'Funding batch-poster accounts on parent chain with ${INITIAL_FUND_AMOUNT_BATCH_POSTER} ETH'
+        `Funding batch-poster accounts on parent chain with ${INITIAL_FUND_AMOUNT_BATCH_POSTER} ETH`
       )
       const tx1 = await signer.sendTransaction({
         to: config.batchPoster,
@@ -116,7 +116,7 @@ async function main() {
 
     if (!rs.etherSent.staker) {
       console.log(
-        'Funding staker accounts on parent chain with ${INITIAL_FUND_AMOUNT_STAKER} ETH'
+        `Funding staker accounts on parent chain with ${INITIAL_FUND_AMOUNT_STAKER} ETH`
       )
       const tx2 = await signer.sendTransaction({
         to: config.staker,
