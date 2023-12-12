@@ -41,6 +41,8 @@ async function main() {
   const INITIAL_FUND_AMOUNT_BATCH_POSTER =
     process.env.INITIAL_FUND_AMOUNT_BATCH_POSTER
   const INITIAL_FUND_AMOUNT_STAKER = process.env.INITIAL_FUND_AMOUNT_STAKER
+  const INITIAL_FUND_AMOUNT_STAKER_ERC20 = process.env.INITIAL_FUND_AMOUNT_STAKER_ERC20
+  const STAKE_TOKEN_ADDRESS = process.env.STAKE_TOKEN_ADDRESS
 
   if (
     !privateKey ||
@@ -48,7 +50,9 @@ async function main() {
     !L3_RPC_URL ||
     !INITIAL_FUND_AMOUNT_CREATOR ||
     !INITIAL_FUND_AMOUNT_BATCH_POSTER ||
-    !INITIAL_FUND_AMOUNT_STAKER
+    !INITIAL_FUND_AMOUNT_STAKER ||
+    !INITIAL_FUND_AMOUNT_STAKER_ERC20 ||
+    !STAKE_TOKEN_ADDRESS
   ) {
     throw new Error('Required environment variable not found')
   }
@@ -128,6 +132,45 @@ async function main() {
         `Transaction was mined in block ${receipt2.blockNumber} on parent chain`
       )
       rs.etherSent.staker = true
+    }
+
+    if (!rs.etherSent.stakerERC20) {
+      if (parseInt(INITIAL_FUND_AMOUNT_STAKER_ERC20) > 0) {
+        console.log(
+          `Funding staker accounts on parent chain with ${INITIAL_FUND_AMOUNT_STAKER_ERC20} ERC20 tokens`
+        )
+        const transferABI = [
+          {
+            name: "transfer",
+            type: "function",
+            inputs: [
+              {
+                name: "_to",
+                type: "address",
+              },
+              {
+                type: "uint256",
+                name: "_tokens",
+              },
+            ],
+            constant: false,
+            outputs: [],
+            payable: false,
+          },
+        ]
+        const token = new ethers.Contract(STAKE_TOKEN_ADDRESS, transferABI, L2Provider)
+        const amount = ethers.utils.parseEther(INITIAL_FUND_AMOUNT_STAKER_ERC20)
+        await token
+          .transfer(config.staker, amount)
+          .then((transferResult: any) => {
+            console.log("transferResult", transferResult)
+          })
+          .catch((error: any) => {
+            console.error("Error", error);
+            throw error
+        })
+      }
+      rs.etherSent.stakerERC20 = true
     }
 
     if (!rs.nativeTokenDeposit) {
