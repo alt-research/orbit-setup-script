@@ -10,6 +10,7 @@ export interface RuntimeState {
 interface EtherSent {
   batchPoster: boolean
   staker: boolean
+  stakerERC20: boolean
 }
 
 export const defaultRunTimeState: RuntimeState = {
@@ -17,6 +18,7 @@ export const defaultRunTimeState: RuntimeState = {
   etherSent: {
     batchPoster: false,
     staker: false,
+    stakerERC20: false,
   },
   nativeTokenDeposit: false,
   tokenBridgeDeployed: false,

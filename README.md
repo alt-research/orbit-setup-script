@@ -11,3 +11,17 @@ Once you’ve downloaded both config files from the [Orbit Deployment UI](https:
 3. Then, add the private key for the wallet you used to deploy the rollup contracts earlier in the following command, and run it: `PRIVATE_KEY="0xYourPrivateKey" L2_RPC_URL="<https://sepolia-rollup.arbitrum.io/rpc>" L3_RPC_URL="<[http://localhost:8449](http://localhost:8449/)>" yarn run setup`
 4. The Orbit chain is now up. You can find all information about the newly deployed chain in the `outputInfo.json` file which is created in the main directory of script folder
 5. Optionally, to track logs, run the following command within the base directory: `docker-compose logs -f nitro`
+
+## AltLayer Instructions
+
+1. Prepare `orbitSetupScriptConfig.json`
+2. Execute bridge setup
+   ```
+   mkdir bridge-setup-result
+   mkdir -p bridge-setup-result/inputs
+   mkdir -p bridge-setup-result/outputs
+   docker run --rm \
+      --volume $(pwd)/bridge-setup-result/inputs/orbitSetupScriptConfig.json:/app/config/orbitSetupScriptConfig.json \
+      --volume $(pwd)/bridge-setup-result/outputs/outputInfo.json:/app/outputInfo.json \
+      305587085711.dkr.ecr.us-west-2.amazonaws.com/orbit-setup:latest 2>&1 | tee bridge-setup-result/docker-run-log.txt
+   ```
