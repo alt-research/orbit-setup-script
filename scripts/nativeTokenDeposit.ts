@@ -4,7 +4,8 @@ import fs from 'fs'
 
 async function sendEthOrDepositERC20(
   erc20Inbox: ethers.Contract,
-  l2Signer: ethers.Wallet
+  l2Signer: ethers.Wallet,
+  INITIAL_FUND_AMOUNT_CREATOR: string
 ) {
   const configRaw = fs.readFileSync(
     './config/orbitSetupScriptConfig.json',
@@ -13,7 +14,7 @@ async function sendEthOrDepositERC20(
   const config = JSON.parse(configRaw)
   const nativeToken = config.nativeToken
   if (nativeToken === ethers.constants.AddressZero) {
-    // Send 0.4 ETH if nativeToken is zero address
+    // Send INITIAL_FUND_AMOUNT_CREATOR ETH if nativeToken is zero address
     const inboxAddress = config.inbox
     const depositEthInterface = new ethers.utils.Interface([
       'function depositEth() public payable',
@@ -25,11 +26,13 @@ async function sendEthOrDepositERC20(
       l2Signer
     )
     const tx = await contract.depositEth({
-      value: ethers.utils.parseEther('0.4'),
+      value: ethers.utils.parseEther(INITIAL_FUND_AMOUNT_CREATOR),
     })
     console.log('Transaction hash on parent chain: ', tx.hash)
     await tx.wait()
-    console.log('0.4 ETHs are deposited to your account')
+    console.log(
+      INITIAL_FUND_AMOUNT_CREATOR + 'ETHs are deposited to your account'
+    )
   } else {
     const nativeTokenContract = ERC20__factory.connect(nativeToken, l2Signer)
 
@@ -59,7 +62,8 @@ async function sendEthOrDepositERC20(
 
 export async function ethOrERC20Deposit(
   privateKey: string,
-  L2_RPC_URL: string
+  L2_RPC_URL: string,
+  INITIAL_FUND_AMOUNT_CREATOR: string
 ) {
   if (!privateKey || !L2_RPC_URL) {
     throw new Error('Required environment variable not found')
@@ -81,5 +85,5 @@ export async function ethOrERC20Deposit(
     l2Signer
   )
 
-  await sendEthOrDepositERC20(erc20Inbox, l2Signer)
+  await sendEthOrDepositERC20(erc20Inbox, l2Signer, INITIAL_FUND_AMOUNT_CREATOR)
 }
