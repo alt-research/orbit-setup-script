@@ -44,7 +44,6 @@ async function main() {
   const INITIAL_FUND_AMOUNT_STAKER_ERC20 =
     process.env.INITIAL_FUND_AMOUNT_STAKER_ERC20
   const STAKE_TOKEN_ADDRESS = process.env.STAKE_TOKEN_ADDRESS
-  const RESUME_STATE_FOLDER = process.env.RESUME_STATE_FOLDER
 
   if (
     !privateKey ||
@@ -54,14 +53,12 @@ async function main() {
     !INITIAL_FUND_AMOUNT_BATCH_POSTER ||
     !INITIAL_FUND_AMOUNT_STAKER ||
     !INITIAL_FUND_AMOUNT_STAKER_ERC20 ||
-    !STAKE_TOKEN_ADDRESS ||
-    !RESUME_STATE_FOLDER
+    !STAKE_TOKEN_ADDRESS
   ) {
     throw new Error('Required environment variable not found')
   }
 
-  const RESUME_STATE_FILE = `${RESUME_STATE_FOLDER}/resumeState.json`
-  console.log(`Any incomplete progress will be saved later in ${RESUME_STATE_FILE}`)
+  const RESUME_STATE_FILE = `./output/resumeState.json`
 
   // Read the JSON configuration
   const configRaw = fs.readFileSync(
