@@ -44,6 +44,7 @@ async function main() {
   const INITIAL_FUND_AMOUNT_STAKER_ERC20 =
     process.env.INITIAL_FUND_AMOUNT_STAKER_ERC20
   const STAKE_TOKEN_ADDRESS = process.env.STAKE_TOKEN_ADDRESS
+  const RESUME_STATE_FOLDER = process.env.RESUME_STATE_FOLDER
 
   if (
     !privateKey ||
@@ -53,10 +54,14 @@ async function main() {
     !INITIAL_FUND_AMOUNT_BATCH_POSTER ||
     !INITIAL_FUND_AMOUNT_STAKER ||
     !INITIAL_FUND_AMOUNT_STAKER_ERC20 ||
-    !STAKE_TOKEN_ADDRESS
+    !STAKE_TOKEN_ADDRESS ||
+    !RESUME_STATE_FOLDER
   ) {
     throw new Error('Required environment variable not found')
   }
+
+  const RESUME_STATE_FILE = `${RESUME_STATE_FOLDER}/resumeState.json`
+  console.log(`Any incomplete progress will be saved later in ${RESUME_STATE_FILE}`)
 
   // Read the JSON configuration
   const configRaw = fs.readFileSync(
@@ -65,8 +70,8 @@ async function main() {
   )
   const config: L3Config = JSON.parse(configRaw)
   let rs: RuntimeState
-  if (fs.existsSync('./config/resumeState.json')) {
-    const stateRaw = fs.readFileSync('./config/resumeState.json', 'utf-8')
+  if (fs.existsSync(RESUME_STATE_FILE)) {
+    const stateRaw = fs.readFileSync(RESUME_STATE_FILE, 'utf-8')
     rs = JSON.parse(stateRaw)
     //check integrity
     checkRuntimeStateIntegrity(rs)
@@ -254,9 +259,9 @@ async function main() {
   } catch (error) {
     console.error('Error occurred:', error)
     const runtimeString = JSON.stringify(rs)
-    fs.writeFileSync('./config/resumeState.json', runtimeString)
+    fs.writeFileSync(RESUME_STATE_FILE, runtimeString)
     console.log(
-      "Seems something went wrong during this process, but don't worry, we have recorded the deployed and initialized contracts into ./config/resumeState.json, next time you rerun the script, it will restart from where it failed "
+      `Seems something went wrong during this process, but don't worry, we have recorded the deployed and initialized contracts into ${RESUME_STATE_FILE}, next time you rerun the script, it will restart from where it failed`
     )
   }
 }
