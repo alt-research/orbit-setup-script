@@ -10,6 +10,9 @@ import { L3Config } from './l3ConfigType'
 export const TOKEN_BRIDGE_CREATOR_Arb_Sepolia =
   '0x56C486D3786fA26cc61473C499A36Eb9CC1FbD8E'
 
+export const TOKEN_BRIDGE_CREATOR_Sepolia =
+  '0x7edb2dfBeEf9417e0454A80c51EE0C034e45a570'
+
 /**
  * Steps:
  * - read network info from local container and register networks
@@ -42,9 +45,11 @@ export const createNewTokenBridge = async (
   let TOKEN_BRIDGE_CREATOR: string
   if ((await l1Provider.getNetwork()).chainId === 421614) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_Sepolia
+  } else if ((await l1Provider.getNetwork()).chainId === 11155111) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Sepolia
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Goerli or Arb Sepolia'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia or Sepolia'
     )
   }
 
