@@ -41,8 +41,10 @@ async function main() {
   const INITIAL_FUND_AMOUNT_BATCH_POSTER =
     process.env.INITIAL_FUND_AMOUNT_BATCH_POSTER
   const INITIAL_FUND_AMOUNT_STAKER = process.env.INITIAL_FUND_AMOUNT_STAKER
-  const INITIAL_FUND_AMOUNT_STAKER_ERC20 = process.env.INITIAL_FUND_AMOUNT_STAKER_ERC20
+  const INITIAL_FUND_AMOUNT_STAKER_ERC20 =
+    process.env.INITIAL_FUND_AMOUNT_STAKER_ERC20
   const STAKE_TOKEN_ADDRESS = process.env.STAKE_TOKEN_ADDRESS
+  const setL1Price = !process.env.SKIP_SET_L1_PRICE
 
   if (
     !privateKey ||
@@ -141,16 +143,16 @@ async function main() {
         )
         const transferABI = [
           {
-            name: "transfer",
-            type: "function",
+            name: 'transfer',
+            type: 'function',
             inputs: [
               {
-                name: "_to",
-                type: "address",
+                name: '_to',
+                type: 'address',
               },
               {
-                type: "uint256",
-                name: "_tokens",
+                type: 'uint256',
+                name: '_tokens',
               },
             ],
             constant: false,
@@ -158,17 +160,21 @@ async function main() {
             payable: false,
           },
         ]
-        const token = new ethers.Contract(STAKE_TOKEN_ADDRESS, transferABI, L2Provider)
+        const token = new ethers.Contract(
+          STAKE_TOKEN_ADDRESS,
+          transferABI,
+          L2Provider
+        )
         const amount = ethers.utils.parseEther(INITIAL_FUND_AMOUNT_STAKER_ERC20)
         await token
           .transfer(config.staker, amount)
           .then((transferResult: any) => {
-            console.log("transferResult", transferResult)
+            console.log('transferResult', transferResult)
           })
           .catch((error: any) => {
-            console.error("Error", error);
+            console.error('Error', error)
             throw error
-        })
+          })
       }
       rs.etherSent.stakerERC20 = true
     }
@@ -239,7 +245,7 @@ async function main() {
       console.log(
         'Running l3Configuration script to configure your Orbit chain 📝📝📝📝📝'
       )
-      await l3Configuration(privateKey, L2_RPC_URL, L3_RPC_URL)
+      await l3Configuration(privateKey, L2_RPC_URL, L3_RPC_URL, setL1Price)
       rs.l3config = true
     }
     ////////////////////////////////
