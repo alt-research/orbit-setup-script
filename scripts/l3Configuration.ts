@@ -137,23 +137,29 @@ export async function l3Configuration(
       if (receipt4.status === 0) {
         throw new Error('Base Fee Setting failed')
       }
+    } else {
+      console.log(`Skipping setL1PricePerUnit`)
     }
   } else {
     console.log(`This is an L2 Orbit`)
-    console.log('Getting L1 base fee')
-    const totalGasPrice = await L2Provider.getGasPrice()
-    console.log(`Setting L1 base fee on L2 to ${totalGasPrice}`)
-    const tx4 = await ArbOwner.setL1PricePerUnit(totalGasPrice)
+    if (setL1Price) {
+      console.log('Getting L1 base fee')
+      const totalGasPrice = await L2Provider.getGasPrice()
+      console.log(`Setting L1 base fee on L2 to ${totalGasPrice}`)
+      const tx4 = await ArbOwner.setL1PricePerUnit(totalGasPrice)
 
-    // Wait for the transaction to be mined
-    const receipt4 = await tx4.wait()
-    console.log(
-      `L1 base fee is set on the block number ${await receipt4.blockNumber} on the Orbit chain`
-    )
+      // Wait for the transaction to be mined
+      const receipt4 = await tx4.wait()
+      console.log(
+        `L1 base fee is set on the block number ${await receipt4.blockNumber} on the Orbit chain`
+      )
 
-    // Check the status of the transaction: 1 is successful, 0 is failure
-    if (receipt4.status === 0) {
-      throw new Error('Base Fee Setting failed')
+      // Check the status of the transaction: 1 is successful, 0 is failure
+      if (receipt4.status === 0) {
+        throw new Error('Base Fee Setting failed')
+      }
+    } else {
+      console.log(`Skipping setL1PricePerUnit`)
     }
   }
 
