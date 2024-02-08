@@ -44,6 +44,7 @@ async function main() {
   const INITIAL_FUND_AMOUNT_STAKER_ERC20 =
     process.env.INITIAL_FUND_AMOUNT_STAKER_ERC20
   const STAKE_TOKEN_ADDRESS = process.env.STAKE_TOKEN_ADDRESS
+  const setL1Price = !process.env.SKIP_SET_L1_PRICE
 
   if (
     !privateKey ||
@@ -240,7 +241,7 @@ async function main() {
       console.log(
         'Running l3Configuration script to configure your Orbit chain 📝📝📝📝📝'
       )
-      await l3Configuration(privateKey, L2_RPC_URL, L3_RPC_URL)
+      await l3Configuration(privateKey, L2_RPC_URL, L3_RPC_URL, setL1Price)
       rs.l3config = true
     }
     ////////////////////////////////
