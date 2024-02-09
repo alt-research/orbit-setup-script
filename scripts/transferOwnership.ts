@@ -4,7 +4,7 @@ import { getSigner } from './erc20TokenBridgeDeployment'
 import ArbOwner from '@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbOwner.sol/ArbOwner.json'
 import fs from 'fs'
 import { L3Config } from './l3ConfigType'
-import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia, TOKEN_BRIDGE_CREATOR_Sepolia } from './createTokenBridge'
+import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia, TOKEN_BRIDGE_CREATOR_Sepolia, TOKEN_BRIDGE_CREATOR_Arb_One } from './createTokenBridge'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 
 const ARB_OWNER_ADDRESS = '0x0000000000000000000000000000000000000070'
@@ -23,9 +23,11 @@ export async function transferOwner(
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_Sepolia
   } else if (l2ChainId === 11155111) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Sepolia
+  } else if (l2ChainId === 42161) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia or Sepolia'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, or Arb One'
     )
   }
 
