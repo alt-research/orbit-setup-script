@@ -1,8 +1,8 @@
 import { ethers } from 'ethers'
-import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 import UpgradeExecutor from '@arbitrum/nitro-contracts/build/contracts/src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json'
 import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia } from './createTokenBridge'
 import { getSigner } from './erc20TokenBridgeDeployment'
+import { getExecutorAddress } from './getExecutorAddress'
 
 async function main() {
   // Read the environment variables
@@ -10,6 +10,7 @@ async function main() {
   const L2_RPC_URL = process.env.L2_RPC_URL
   const L3_RPC_URL = process.env.L3_RPC_URL
   const newOwner = process.env.NEW_OWNER
+  const INBOX = process.env.INBOX || ''
   if (!privateKey || !L3_RPC_URL || !newOwner) {
     throw new Error('Required environment variable not found')
   }
@@ -18,11 +19,9 @@ async function main() {
   const L2Provider = new ethers.providers.JsonRpcProvider(L2_RPC_URL)
   const L3Provider = new ethers.providers.JsonRpcProvider(L3_RPC_URL)
   const l3Deployer = getSigner(L3Provider, privateKey)
-  const l2Deployer = getSigner(L2Provider, privateKey)
 
   //fetching chain id of parent chain
   const l2ChainId = (await L2Provider.getNetwork()).chainId
-  const l3ChainId = (await L3Provider.getNetwork()).chainId
 
   let TOKEN_BRIDGE_CREATOR: string
   if (l2ChainId === 421614) {
@@ -33,16 +32,12 @@ async function main() {
     )
   }
 
-  const L1AtomicTokenBridgeCreator__factory = new ethers.Contract(
+  const executorContractAddress = await getExecutorAddress(
     TOKEN_BRIDGE_CREATOR,
-    L1AtomicTokenBridgeCreator.abi,
-    l2Deployer
+    INBOX,
+    L2Provider,
+    L3Provider
   )
-  const l1TokenBridgeCreator =
-    L1AtomicTokenBridgeCreator__factory.connect(l2Deployer)
-
-  const executorContractAddress =
-    await l1TokenBridgeCreator.getCanonicalL2UpgradeExecutorAddress(l3ChainId)
 
   console.log('executor address: ', executorContractAddress)
   //Defining upgrade executor contract
