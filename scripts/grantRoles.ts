@@ -1,6 +1,10 @@
 import { ethers } from 'ethers'
 import UpgradeExecutor from '@arbitrum/nitro-contracts/build/contracts/src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json'
-import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia } from './createTokenBridge'
+import {
+  TOKEN_BRIDGE_CREATOR_Arb_Sepolia,
+  TOKEN_BRIDGE_CREATOR_Sepolia,
+  TOKEN_BRIDGE_CREATOR_Arb_One,
+} from './createTokenBridge'
 import { getSigner } from './erc20TokenBridgeDeployment'
 import { getExecutorAddress } from './getExecutorAddress'
 
@@ -26,9 +30,13 @@ async function main() {
   let TOKEN_BRIDGE_CREATOR: string
   if (l2ChainId === 421614) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_Sepolia
+  } else if (l2ChainId === 11155111) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Sepolia
+  } else if (l2ChainId === 42161) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Goerli, Arb Sepolia, or Arb One'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, or Arb One'
     )
   }
 

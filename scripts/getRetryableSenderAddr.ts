@@ -2,7 +2,11 @@ import { ethers } from 'ethers'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 import { getSigner } from './erc20TokenBridgeDeployment'
 import fs from 'fs'
-import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia } from './createTokenBridge'
+import {
+  TOKEN_BRIDGE_CREATOR_Arb_Sepolia,
+  TOKEN_BRIDGE_CREATOR_Sepolia,
+  TOKEN_BRIDGE_CREATOR_Arb_One,
+} from './createTokenBridge'
 
 async function main() {
   const L2_RPC_URL = process.env.L2_RPC_URL
@@ -17,9 +21,13 @@ async function main() {
   let TOKEN_BRIDGE_CREATOR: string
   if (l2ChainId === 421614) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_Sepolia
+  } else if (l2ChainId === 11155111) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Sepolia
+  } else if (l2ChainId === 42161) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Goerli, Arb Sepolia, or Arb One'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, or Arb One'
     )
   }
   const L1AtomicTokenBridgeCreator__factory = new ethers.Contract(
