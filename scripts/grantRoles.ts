@@ -1,9 +1,7 @@
 import { ethers } from 'ethers'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 import UpgradeExecutor from '@arbitrum/nitro-contracts/build/contracts/src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json'
-import {
-  TOKEN_BRIDGE_CREATOR_Arb_Sepolia,
-} from './createTokenBridge'
+import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia } from './createTokenBridge'
 import { getSigner } from './erc20TokenBridgeDeployment'
 
 async function main() {

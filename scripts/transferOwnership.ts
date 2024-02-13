@@ -4,7 +4,11 @@ import { getSigner } from './erc20TokenBridgeDeployment'
 import ArbOwner from '@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbOwner.sol/ArbOwner.json'
 import fs from 'fs'
 import { L3Config } from './l3ConfigType'
-import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia, TOKEN_BRIDGE_CREATOR_Sepolia, TOKEN_BRIDGE_CREATOR_Arb_One } from './createTokenBridge'
+import {
+  TOKEN_BRIDGE_CREATOR_Arb_Sepolia,
+  TOKEN_BRIDGE_CREATOR_Sepolia,
+  TOKEN_BRIDGE_CREATOR_Arb_One,
+} from './createTokenBridge'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 
 const ARB_OWNER_ADDRESS = '0x0000000000000000000000000000000000000070'
