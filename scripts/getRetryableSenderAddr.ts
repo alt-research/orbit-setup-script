@@ -2,9 +2,7 @@ import { ethers } from 'ethers'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 import { getSigner } from './erc20TokenBridgeDeployment'
 import fs from 'fs'
-import {
-  TOKEN_BRIDGE_CREATOR_Arb_Sepolia,
-} from './createTokenBridge'
+import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia } from './createTokenBridge'
 
 async function main() {
   const L2_RPC_URL = process.env.L2_RPC_URL
