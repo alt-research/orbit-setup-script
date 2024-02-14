@@ -25,6 +25,7 @@
     "setup": "ts-node scripts/setup.ts",
     "setL1PricingRewardRate": "ts-node scripts/setL1PricingRewardRate.ts",
     "setL1PricePerUnit": "ts-node scripts/setL1PricePerUnit.ts",
+    "setPerBatchGasCharge": "ts-node scripts/setPerBatchGasCharge.ts",
     "retryableSender": "ts-node scripts/getRetryableSenderAddr.ts",
     "setFeeCollector": "ts-node scripts/setFeeCollector.ts",
     "grantRoles": "ts-node scripts/grantRoles.ts",
