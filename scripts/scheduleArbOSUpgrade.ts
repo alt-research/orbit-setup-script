@@ -10,12 +10,12 @@ import { getExecutorAddress } from './getExecutorAddress'
 
 async function main() {
   // Read the environment variables
-  const L2_RPC_URL = process.env.L2_RPC_URL
-  const L3_RPC_URL = process.env.L3_RPC_URL
+  const L2_RPC_URL = process.env.L2_RPC_URL || ''
+  const L3_RPC_URL = process.env.L3_RPC_URL || ''
   const INBOX = process.env.INBOX || ''
-  const privateKey = process.env.PRIVATE_KEY
-  const newVersion = process.env.NEW_VERSION
-  const timestamp = process.env.TIMESTAMP
+  const privateKey = process.env.PRIVATE_KEY || ''
+  const newVersion = process.env.NEW_VERSION || ''
+  const timestamp = ''
   if (!privateKey || !L3_RPC_URL || !INBOX || !newVersion) {
     throw new Error('Required environment variable not found')
   }
@@ -47,6 +47,7 @@ async function main() {
     L2Provider,
     L3Provider
   )
+  console.log('executor address: ', executorContractAddress)
 
   //Defining upgrade executor contract
   const executorContract__factory = new ethers.Contract(
@@ -64,7 +65,7 @@ async function main() {
     timestamp,
   ])
   const receipt = await upgradeExecutor.executeCall(
-    executorContractAddress,
+    '0x0000000000000000000000000000000000000070',
     data
   )
   console.log('Transaction complete on TX:', receipt.hash)
