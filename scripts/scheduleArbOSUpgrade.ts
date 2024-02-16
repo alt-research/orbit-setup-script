@@ -15,7 +15,7 @@ async function main() {
   const INBOX = process.env.INBOX || ''
   const privateKey = process.env.PRIVATE_KEY || ''
   const newVersion = process.env.NEW_VERSION || ''
-  const timestamp = ''
+  const timestamp = process.env.TIMESTAMP || ''
   if (!privateKey || !L3_RPC_URL || !INBOX || !newVersion) {
     throw new Error('Required environment variable not found')
   }
