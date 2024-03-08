@@ -22,6 +22,8 @@
     "typescript": "^5.1.3"
   },
   "scripts": {
+    "checkOwners": "ts-node scripts/checkOwners.ts",
+    "checkRoles": "ts-node scripts/checkRoles.ts",
     "deposit": "ts-node scripts/chargeEthOrErc20.ts",
     "getExecutorAddress": "ts-node scripts/getExecutorAddress.ts",
     "getRetryableSenderAddr": "ts-node scripts/getRetryableSenderAddr.ts",
@@ -31,6 +33,7 @@
     "scheduleArbOSUpgrade": "ts-node scripts/scheduleArbOSUpgrade.ts",
     "setFeeCollector": "ts-node scripts/setFeeCollector.ts",
     "setL1PricingRewardRate": "ts-node scripts/setL1PricingRewardRate.ts",
+    "setL1PricingRewardRecipient": "ts-node scripts/setL1PricingRewardRecipient.ts",
     "setL1PricePerUnit": "ts-node scripts/setL1PricePerUnit.ts",
     "setPerBatchGasCharge": "ts-node scripts/setPerBatchGasCharge.ts",
     "setup": "ts-node scripts/setup.ts",
