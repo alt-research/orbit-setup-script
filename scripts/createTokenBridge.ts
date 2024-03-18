@@ -16,6 +16,9 @@ export const TOKEN_BRIDGE_CREATOR_Sepolia =
 export const TOKEN_BRIDGE_CREATOR_Arb_One =
   '0x2f5624dc8800dfA0A82AC03509Ef8bb8E7Ac000e'
 
+export const TOKEN_BRIDGE_CREATOR_Holesky =
+  '0xac890ED9bC2494C053cE701F138958df95966d94'
+
 /**
  * Steps:
  * - read network info from local container and register networks
@@ -52,9 +55,11 @@ export const createNewTokenBridge = async (
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Sepolia
   } else if ((await l1Provider.getNetwork()).chainId === 42161) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
+  } else if ((await l1Provider.getNetwork()).chainId === 17000) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Holesky
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, or Arb One'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, Holesky, or Arb One'
     )
   }
 
