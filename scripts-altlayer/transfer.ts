@@ -5,7 +5,8 @@ const to = process.env.TO || ''
 const amount = process.env.AMOUNT || ''
 const rpc = process.env.PRC || ''
 
-const provider = new ethers.providers.WebSocketProvider(rpc)
+const provider = new ethers.providers.JsonRpcProvider(rpc)
+provider.pollingInterval = 100
 const signer = new ethers.Wallet(privateKey).connect(provider)
 
 async function main() {
