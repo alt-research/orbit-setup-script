@@ -5,7 +5,7 @@ const to = process.env.TO || ''
 const amount = process.env.AMOUNT || ''
 const rpc = process.env.PRC || ''
 
-const provider = new ethers.providers.JsonRpcProvider(rpc)
+const provider = new ethers.providers.WebSocketProvider(rpc)
 const signer = new ethers.Wallet(privateKey).connect(provider)
 
 async function main() {
@@ -14,7 +14,7 @@ async function main() {
     to: to,
     value: ethers.utils.parseEther(amount),
   })
-  console.log(`Transaction hash on parent chain: ${tx.hash}`)
+  console.log(`Transaction hash on target chain: ${tx.hash}`)
   const receipt = await tx.wait()
   console.log(
     `Transaction was mined in block ${receipt.blockNumber} on parent chain`
