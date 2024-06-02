@@ -13,7 +13,8 @@ export async function main() {
     throw new Error('Required environment variable not found')
   }
 
-  const JUST_GENERATE_TARGET_CALLDATA = process.env.JUST_GENERATE_TARGET_CALLDATA
+  const JUST_GENERATE_TARGET_CALLDATA =
+    process.env.JUST_GENERATE_TARGET_CALLDATA
 
   // To determine UpgradeExecutor proxy, provide either TOKEN_BRIDGE_CREATOR and INBOX, or just UPGRADE_EXECUTOR_PROXY
   const TOKEN_BRIDGE_CREATOR = process.env.TOKEN_BRIDGE_CREATOR || ''
@@ -57,7 +58,7 @@ export async function main() {
   ]
   const iface = new ethers.utils.Interface(ABI)
   const data = iface.encodeFunctionData('setL1PricingRewardRecipient', [
-    RECIPIENT
+    RECIPIENT,
   ])
 
   // Constructing call data for setting L1 pricing reward rate on L3
