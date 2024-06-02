@@ -49,7 +49,10 @@ function createPublicClientFromChainInfo({
     testnet: true,
   })
 
-  return createPublicClient({ chain, transport: http(rpcUrl, {timeout: 120_000}) })
+  return createPublicClient({
+    chain,
+    transport: http(rpcUrl, { timeout: 120_000 }),
+  })
 }
 
 export const TOKEN_BRIDGE_CREATOR_Arb_Sepolia =
@@ -406,7 +409,10 @@ export const createERC20Bridge = async (
       },
     },
   }
-  fs.writeFileSync('./output/outputInfo.json', JSON.stringify(outputInfo, null, 2))
+  fs.writeFileSync(
+    './output/outputInfo.json',
+    JSON.stringify(outputInfo, null, 2)
+  )
 
   console.log('Done!')
 }

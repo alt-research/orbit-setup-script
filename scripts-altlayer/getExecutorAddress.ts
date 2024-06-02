@@ -13,7 +13,12 @@ const L2Provider = new ethers.providers.JsonRpcProvider(L2_RPC_URL)
 const L3Provider = new ethers.providers.JsonRpcProvider(L3_RPC_URL)
 
 async function main() {
-  return await getExecutorAddress(TOKEN_BRIDGE_CREATOR, INBOX, L2Provider, L3Provider)
+  return await getExecutorAddress(
+    TOKEN_BRIDGE_CREATOR,
+    INBOX,
+    L2Provider,
+    L3Provider
+  )
 }
 
 // Run the script

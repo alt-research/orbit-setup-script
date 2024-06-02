@@ -109,7 +109,9 @@ export async function l3Configuration(
   console.log(
     'Setting the L1PricingRewardRecipient address for the Orbit chain'
   )
-  const tx4 = await ArbOwner.setL1PricingRewardRecipient(l1PricingRewardRecipient)
+  const tx4 = await ArbOwner.setL1PricingRewardRecipient(
+    l1PricingRewardRecipient
+  )
 
   // Wait for the transaction to be mined
   const receipt4 = await tx4.wait()
@@ -126,7 +128,7 @@ export async function l3Configuration(
 
   // Setting L1 basefee on L3
   const l2ChainId = (await L2Provider.getNetwork()).chainId
-  if ((l2ChainId === 421614) || (l2ChainId === 42161)) {
+  if (l2ChainId === 421614 || l2ChainId === 42161) {
     console.log(`This is an L3 Orbit`)
 
     const arbGasInfoAbi = ArbGasInfo__abi
@@ -136,22 +138,24 @@ export async function l3Configuration(
       arbGasInfoAbi,
       l2signer
     )
-  
+
     if (setL1Price) {
       console.log('Getting L1 base fee estimate')
       const l1BaseFeeEstimate = await ArbOGasInfo.getL1BaseFeeEstimate()
-      console.log(`L1 Base Fee estimate on L2 is ${l1BaseFeeEstimate.toNumber()}`)
+      console.log(
+        `L1 Base Fee estimate on L2 is ${l1BaseFeeEstimate.toNumber()}`
+      )
       const l2Basefee = await L2Provider.getGasPrice()
       const totalGasPrice = await l1BaseFeeEstimate.add(l2Basefee)
       console.log(`Setting L1 base fee estimate on L3 to ${totalGasPrice}`)
       const tx5 = await ArbOwner.setL1PricePerUnit(totalGasPrice)
-    
+
       // Wait for the transaction to be mined
       const receipt5 = await tx5.wait()
       console.log(
         `L1 base fee estimate is set on the block number ${await receipt5.blockNumber} on the Orbit chain`
       )
-    
+
       // Check the status of the transaction: 1 is successful, 0 is failure
       if (receipt5.status === 0) {
         throw new Error('Base Fee Setting failed')
@@ -159,7 +163,6 @@ export async function l3Configuration(
     } else {
       console.log(`Skipping setL1PricePerUnit`)
     }
-
   } else {
     console.log(`This is an L2 Orbit`)
     if (setL1Price) {
