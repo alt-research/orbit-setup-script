@@ -20,7 +20,7 @@ import {
   createTokenBridgePrepareSetWethGatewayTransactionRequest,
   createTokenBridgePrepareSetWethGatewayTransactionReceipt,
 } from 'celestia-orbit-sdk'
-import { sanitizePrivateKey } 'celestia-orbit-sdk/utils'
+import { sanitizePrivateKey } from 'celestia-orbit-sdk/utils'
 
 import { L3Config } from './l3ConfigType'
 
