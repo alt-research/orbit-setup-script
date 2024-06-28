@@ -19,8 +19,8 @@ import {
   createTokenBridgePrepareTransactionReceipt,
   createTokenBridgePrepareSetWethGatewayTransactionRequest,
   createTokenBridgePrepareSetWethGatewayTransactionReceipt,
-} from 'orbit-sdk-celestia'
-import { sanitizePrivateKey } 'orbit-sdk-celestia/utils'
+} from 'celestia-orbit-sdk'
+import { sanitizePrivateKey } 'celestia-orbit-sdk/utils'
 
 import { L3Config } from './l3ConfigType'
 
