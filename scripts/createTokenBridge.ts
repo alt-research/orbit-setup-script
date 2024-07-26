@@ -11,7 +11,6 @@ import { constants } from 'ethers'
 import { defineChain, createPublicClient, http, Address } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import {
-  createRollupFetchTransactionHash,
   createRollupPrepareTransactionReceipt,
   createTokenBridgeEnoughCustomFeeTokenAllowance,
   createTokenBridgePrepareCustomFeeTokenApprovalTransactionRequest,
@@ -20,6 +19,9 @@ import {
   createTokenBridgePrepareSetWethGatewayTransactionRequest,
   createTokenBridgePrepareSetWethGatewayTransactionReceipt,
 } from '@arbitrum/orbit-sdk'
+import {
+  createRollupFetchTransactionHash,
+} from '@alt-research/orbit-sdk-avail'
 import { sanitizePrivateKey } from '@arbitrum/orbit-sdk/utils'
 
 import { L3Config } from './l3ConfigType'
