@@ -2,6 +2,7 @@ import { JsonRpcProvider } from '@ethersproject/providers'
 import {
   L1Network,
   L2Network,
+  addCustomNetwork,
   constants as arbitrumSdkConstants,
 } from '@arbitrum/sdk'
 import { IERC20Bridge__factory } from '@arbitrum/sdk/dist/lib/abi/factories/IERC20Bridge__factory'
@@ -16,11 +17,11 @@ import {
   createTokenBridgePrepareCustomFeeTokenApprovalTransactionRequest,
   createTokenBridgePrepareTransactionRequest,
   createTokenBridgePrepareTransactionReceipt,
-  createTokenBridgePrepareSetWethGatewayTransactionRequest,
-  createTokenBridgePrepareSetWethGatewayTransactionReceipt,
 } from '@arbitrum/orbit-sdk'
 import {
   createRollupFetchTransactionHash,
+  createTokenBridgePrepareSetWethGatewayTransactionRequest,
+  createTokenBridgePrepareSetWethGatewayTransactionReceipt,
 } from '@alt-research/orbit-sdk-avail'
 import { sanitizePrivateKey } from '@arbitrum/orbit-sdk/utils'
 
@@ -192,7 +193,7 @@ export const createNewTokenBridge = async (
 
   // get the transaction receipt after waiting for the transaction to complete
   const txReceipt = createTokenBridgePrepareTransactionReceipt(
-    await parentChainPublicClient.waitForTransactionReceipt({ hash: txHash })
+    await parentChainPublicClient.waitForTransactionReceipt({ hash: "0xdb356650373b3ea75addacd0518c29ff709f1651a8c0bb1843e4b58f054fbac6" })
   )
   console.log(
     `Token bridge deployed in transaction ${txReceipt.transactionHash}`
@@ -211,59 +212,6 @@ export const createNewTokenBridge = async (
     await txReceipt.getTokenBridgeContracts({
       parentChainPublicClient,
     })
-
-  // set weth gateway (only for eth-based chains)
-  if (nativeToken == constants.AddressZero) {
-    console.log(`Setting weth gateway...`)
-    const setWethGatewayTxRequest =
-      await createTokenBridgePrepareSetWethGatewayTransactionRequest({
-        rollup: rollupAddress as Address,
-        parentChainPublicClient,
-        orbitChainPublicClient,
-        account: deployer.address,
-        retryableGasOverrides: {
-          gasLimit: {
-            percentIncrease: 200n,
-          },
-        },
-      })
-
-    // sign and send the transaction
-    const setWethGatewayTxHash =
-      await parentChainPublicClient.sendRawTransaction({
-        serializedTransaction: await deployer.signTransaction(
-          setWethGatewayTxRequest
-        ),
-      })
-
-    // get the transaction receipt after waiting for the transaction to complete
-    const setWethGatewayTxReceipt =
-      createTokenBridgePrepareSetWethGatewayTransactionReceipt(
-        await parentChainPublicClient.waitForTransactionReceipt({
-          hash: setWethGatewayTxHash,
-        })
-      )
-
-    console.log(
-      `Weth gateway set in tx ${setWethGatewayTxReceipt.transactionHash}`
-    )
-
-    // Wait for retryables to execute
-    console.log(`Waiting for retryables...`)
-    const orbitChainSetWethGatewayRetryableReceipt =
-      await setWethGatewayTxReceipt.waitForRetryables({
-        orbitPublicClient: orbitChainPublicClient,
-      })
-    console.log(
-      `Retryable #1: ${orbitChainSetWethGatewayRetryableReceipt[0].transactionHash}`
-    )
-    if (orbitChainSetWethGatewayRetryableReceipt[0].status !== 'success') {
-      console.error(
-        `Retryable status is not success: ${orbitChainSetWethGatewayRetryableReceipt[0].status}. The process will continue, but you'll have to register the Weth gateway later again.`
-      )
-    }
-    console.log(`Done!`)
-  }
 
   // fetch core contracts
   console.log(`Fetching core contracts...`);
@@ -327,6 +275,63 @@ export const createNewTokenBridge = async (
       l2WethGateway: orbitChainContracts.wethGateway,
     },
     blockTime: arbitrumSdkConstants.ARB_MINIMUM_BLOCK_TIME_IN_SECONDS,
+  }
+
+  // set weth gateway (only for eth-based chains)
+  if (nativeToken === constants.AddressZero) {
+    console.log(`Setting weth gateway...`)
+
+    // This is necessary otherwise we get ArbSdkError: Unrecognized network
+    addCustomNetwork({ customL2Network: l2Network });
+
+    const setWethGatewayTxRequest =
+      await createTokenBridgePrepareSetWethGatewayTransactionRequest({
+        rollup: rollupAddress as Address,
+        parentChainPublicClient,
+        orbitChainPublicClient,
+        account: deployer.address,
+        retryableGasOverrides: {
+          gasLimit: {
+            percentIncrease: 200n,
+          },
+        },
+      })
+
+    // sign and send the transaction
+    const setWethGatewayTxHash =
+      await parentChainPublicClient.sendRawTransaction({
+        serializedTransaction: await deployer.signTransaction(
+          setWethGatewayTxRequest
+        ),
+      })
+
+    // get the transaction receipt after waiting for the transaction to complete
+    const setWethGatewayTxReceipt =
+      createTokenBridgePrepareSetWethGatewayTransactionReceipt(
+        await parentChainPublicClient.waitForTransactionReceipt({
+          hash: setWethGatewayTxHash,
+        })
+      )
+
+    console.log(
+      `Weth gateway set in tx ${setWethGatewayTxReceipt.transactionHash}`
+    )
+
+    // Wait for retryables to execute
+    console.log(`Waiting for retryables...`)
+    const orbitChainSetWethGatewayRetryableReceipt =
+      await setWethGatewayTxReceipt.waitForRetryables({
+        orbitPublicClient: orbitChainPublicClient,
+      })
+    console.log(
+      `Retryable #1: ${orbitChainSetWethGatewayRetryableReceipt[0].transactionHash}`
+    )
+    if (orbitChainSetWethGatewayRetryableReceipt[0].status !== 'success') {
+      console.error(
+        `Retryable status is not success: ${orbitChainSetWethGatewayRetryableReceipt[0].status}. The process will continue, but you'll have to register the Weth gateway later again.`
+      )
+    }
+    console.log(`Done!`)
   }
 
   return {
