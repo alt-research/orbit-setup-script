@@ -213,7 +213,8 @@ export const createNewTokenBridge = async (
     })
 
   // set weth gateway (only for eth-based chains)
-  if (nativeToken === constants.AddressZero) {
+  if (nativeToken == constants.AddressZero) {
+    console.log(`Setting weth gateway...`)
     const setWethGatewayTxRequest =
       await createTokenBridgePrepareSetWethGatewayTransactionRequest({
         rollup: rollupAddress as Address,
@@ -265,6 +266,7 @@ export const createNewTokenBridge = async (
   }
 
   // fetch core contracts
+  console.log(`Fetching core contracts...`);
   const createRollupTxHash = await createRollupFetchTransactionHash({
     rollup: rollupAddress as Address,
     publicClient: parentChainPublicClient,
