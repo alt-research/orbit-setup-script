@@ -281,8 +281,12 @@ export const createNewTokenBridge = async (
   if (nativeToken === constants.AddressZero) {
     console.log(`Setting weth gateway...`)
 
-    // This is necessary otherwise we get ArbSdkError: Unrecognized network
-    addCustomNetwork({ customL2Network: l2Network });
+    try {
+      // This might be necessary if we get ArbSdkError: Unrecognized network
+      addCustomNetwork({ customL2Network: l2Network });
+    } catch (error) {
+      console.log(error)
+    }
 
     const setWethGatewayTxRequest =
       await createTokenBridgePrepareSetWethGatewayTransactionRequest({
