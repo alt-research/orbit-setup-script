@@ -193,7 +193,7 @@ export const createNewTokenBridge = async (
 
   // get the transaction receipt after waiting for the transaction to complete
   const txReceipt = createTokenBridgePrepareTransactionReceipt(
-    await parentChainPublicClient.waitForTransactionReceipt({ hash: "0xdb356650373b3ea75addacd0518c29ff709f1651a8c0bb1843e4b58f054fbac6" })
+    await parentChainPublicClient.waitForTransactionReceipt({ hash: txHash })
   )
   console.log(
     `Token bridge deployed in transaction ${txReceipt.transactionHash}`
