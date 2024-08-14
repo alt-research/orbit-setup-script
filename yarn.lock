@@ -12,10 +12,10 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.0.tgz#d2a39395c587e092d77cbbc80acf956a54f38bf7"
   integrity sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==
 
-"@alt-research/orbit-sdk-avail@^0.9.11":
-  version "0.9.11"
-  resolved "https://registry.yarnpkg.com/@alt-research/orbit-sdk-avail/-/orbit-sdk-avail-0.9.11.tgz#ff0b70ba4fa12f958f8c5219e09244987fcb2fac"
-  integrity sha512-51pVPWL1igH/vNiWy30UYgLDyK8WlwYjZN7XvR0lppCyM3B3K+xi6+YkSApj54pVPO0ktmF/d3mfY/kL61yGcA==
+"@alt-research/orbit-sdk-avail@^0.9.8":
+  version "0.9.8"
+  resolved "https://registry.yarnpkg.com/@alt-research/orbit-sdk-avail/-/orbit-sdk-avail-0.9.8.tgz#b51abd4a6e34479330560df5a6b96041d5fe6ddd"
+  integrity sha512-2+MOUaeHjqzNl0qDOZ/vHiLVQQo+ULyx4EOZ8NRBoywlxiJvoX6psi/XECtPYGShC7C/Rb/um4fWYrA5/90vOg==
   dependencies:
     "@arbitrum/sdk" "^3.3.2"
     "@arbitrum/token-bridge-contracts" "^1.2.1"
