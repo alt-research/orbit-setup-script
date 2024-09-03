@@ -67,6 +67,9 @@ export const TOKEN_BRIDGE_CREATOR_Arb_One =
 export const TOKEN_BRIDGE_CREATOR_Holesky =
   '0xac890ED9bC2494C053cE701F138958df95966d94'
 
+export const TOKEN_BRIDGE_CREATOR_Ethereum =
+  '0x60D9A46F24D5a35b95A78Dd3E793e55D94EE0660'
+
 async function getNativeToken({
   rollup,
   provider,

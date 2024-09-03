@@ -5,6 +5,7 @@ import {
   TOKEN_BRIDGE_CREATOR_Sepolia,
   TOKEN_BRIDGE_CREATOR_Arb_One,
   TOKEN_BRIDGE_CREATOR_Holesky,
+  TOKEN_BRIDGE_CREATOR_Ethereum,
 } from '../scripts/createTokenBridge'
 import { getSigner } from './erc20TokenBridgeDeployment'
 import { getExecutorAddress } from './getExecutorAddress'
@@ -37,9 +38,11 @@ async function main() {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
   } else if (l2ChainId === 17000) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Holesky
+  } else if (l2ChainId === 1) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Ethereum
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, Holesky, or Arb One'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, Holesky, Arb One, or Ethereum'
     )
   }
 

@@ -7,6 +7,7 @@ import {
   TOKEN_BRIDGE_CREATOR_Sepolia,
   TOKEN_BRIDGE_CREATOR_Arb_One,
   TOKEN_BRIDGE_CREATOR_Holesky,
+  TOKEN_BRIDGE_CREATOR_Ethereum,
 } from './createTokenBridge'
 
 async function main() {
@@ -28,9 +29,11 @@ async function main() {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
   } else if (l2ChainId === 17000) {
     TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Holesky
+  } else if (l2ChainId === 1) {
+    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Ethereum
   } else {
     throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, Holesky, or Arb One'
+      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, Holesky, Arb One, or Ethereum'
     )
   }
   const L1AtomicTokenBridgeCreator__factory = new ethers.Contract(
