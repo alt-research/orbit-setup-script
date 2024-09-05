@@ -17,10 +17,10 @@
   resolved "https://registry.yarnpkg.com/@adraffy/ens-normalize/-/ens-normalize-1.10.1.tgz#63430d04bd8c5e74f8d7d049338f1cd9d4f02069"
   integrity sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==
 
-"@alt-research/orbit-sdk-berachain@^0.19.0-beta.1":
-  version "0.19.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@alt-research/orbit-sdk-berachain/-/orbit-sdk-berachain-0.19.0-beta.1.tgz#c28a40bf51d4b3d12e7208354db4e6d4a0967049"
-  integrity sha512-cUmBS5USAoq7yg2K+ZAP/YbU5agLTiaEbb86ltGrX0T4wpgRuiaa+OXBhzaYl6wuu80Ma5w6wU+qH8WYGoHbpQ==
+"@alt-research/orbit-sdk-berachain@^0.19.0-beta.2":
+  version "0.19.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@alt-research/orbit-sdk-berachain/-/orbit-sdk-berachain-0.19.0-beta.2.tgz#c63f2e55d404ddbd850b22360901c61f390940bf"
+  integrity sha512-/oCVUS35fSWmNaVtZnHFL1GRuauTWnNZGhmk1vfGA4tSzsZWumHUeWYeGgK9piN+lMWV7pTxFn3k8P01CHJlzg==
   dependencies:
     "@arbitrum/sdk" "^4.0.0"
     "@arbitrum/token-bridge-contracts" "^1.2.2"
