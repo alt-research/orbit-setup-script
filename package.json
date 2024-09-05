@@ -4,7 +4,8 @@
     "@arbitrum/nitro-contracts": "^1.2.1",
     "@alt-research/orbit-sdk-berachain": "^0.19.0-beta.0",
     "@arbitrum/token-bridge-contracts": "^1.2.1",
-    "viem": "^1.20.0"
+    "viem": "^1.20.0",
+    "viembera": "npm:viem@^2.15.0"
   },
   "devDependencies": {
     "@arbitrum/sdk": "^3.3.3",
