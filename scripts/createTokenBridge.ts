@@ -17,13 +17,13 @@ import {
   createTokenBridgePrepareCustomFeeTokenApprovalTransactionRequest,
   createTokenBridgePrepareTransactionRequest,
   createTokenBridgePrepareTransactionReceipt,
-} from '@arbitrum/orbit-sdk'
+} from '@alt-research/orbit-sdk-berachain'
 import {
   createRollupFetchTransactionHash,
   createTokenBridgePrepareSetWethGatewayTransactionRequest,
   createTokenBridgePrepareSetWethGatewayTransactionReceipt,
-} from '@alt-research/orbit-sdk-avail'
-import { sanitizePrivateKey } from '@arbitrum/orbit-sdk/utils'
+} from '@alt-research/orbit-sdk-berachain'
+import { sanitizePrivateKey } from '@alt-research/orbit-sdk-berachain/utils'
 
 import { L3Config } from './l3ConfigType'
 
