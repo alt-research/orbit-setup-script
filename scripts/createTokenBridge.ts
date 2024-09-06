@@ -70,6 +70,9 @@ export const TOKEN_BRIDGE_CREATOR_Holesky =
 export const TOKEN_BRIDGE_CREATOR_Ethereum =
   '0x60D9A46F24D5a35b95A78Dd3E793e55D94EE0660'
 
+export const TOKEN_BRIDGE_CREATOR_Berachain =
+  '0x05F9BD2b098f09afb0F007Ca9AEc393Dc8E804E9'
+
 async function getNativeToken({
   rollup,
   provider,
