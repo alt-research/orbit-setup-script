@@ -13,16 +13,14 @@ import { defineChain, createPublicClient, http, Address } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import {
   createRollupPrepareTransactionReceipt,
+  createRollupFetchTransactionHash,
   createTokenBridgeEnoughCustomFeeTokenAllowance,
   createTokenBridgePrepareCustomFeeTokenApprovalTransactionRequest,
   createTokenBridgePrepareTransactionRequest,
   createTokenBridgePrepareTransactionReceipt,
-} from '@arbitrum/orbit-sdk'
-import {
-  createRollupFetchTransactionHash,
   createTokenBridgePrepareSetWethGatewayTransactionRequest,
   createTokenBridgePrepareSetWethGatewayTransactionReceipt,
-} from '@alt-research/orbit-sdk-avail'
+} from '@arbitrum/orbit-sdk'
 import { sanitizePrivateKey } from '@arbitrum/orbit-sdk/utils'
 
 import { L3Config } from './l3ConfigType'
@@ -109,7 +107,8 @@ export const createNewTokenBridge = async (
   baseChainRpc: string,
   baseChainDeployerKey: string,
   childChainRpc: string,
-  rollupAddress: string
+  rollupAddress: string,
+  deployedAtBlockNumber: bigint
 ) => {
   const l1Provider = new JsonRpcProvider(baseChainRpc)
   const l1NetworkInfo = await l1Provider.getNetwork()
@@ -275,6 +274,7 @@ export const createNewTokenBridge = async (
   const createRollupTxHash = await createRollupFetchTransactionHash({
     rollup: rollupAddress as Address,
     publicClient: parentChainPublicClient,
+    fromBlock: deployedAtBlockNumber,
   })
 
   const coreContracts = createRollupPrepareTransactionReceipt(
@@ -348,11 +348,19 @@ export const createERC20Bridge = async (
 ) => {
   console.log('Creating token bridge for rollup', rollupAddress)
 
+  // Read the JSON configuration
+  const configRaw = fs.readFileSync(
+    './config/orbitSetupScriptConfig.json',
+    'utf-8'
+  )
+  const config: L3Config = JSON.parse(configRaw)
+
   const { l1Network, l2Network } = await createNewTokenBridge(
     baseChainRpc,
     baseChainDeployerKey,
     childChainRpc,
-    rollupAddress
+    rollupAddress,
+    BigInt(config.deployedAtBlockNumber)
   )
   const NETWORK_FILE = 'network.json'
   fs.writeFileSync(
@@ -360,13 +368,6 @@ export const createERC20Bridge = async (
     JSON.stringify({ l1Network, l2Network }, null, 2)
   )
   console.log(NETWORK_FILE + ' updated')
-
-  // Read the JSON configuration
-  const configRaw = fs.readFileSync(
-    './config/orbitSetupScriptConfig.json',
-    'utf-8'
-  )
-  const config: L3Config = JSON.parse(configRaw)
 
   const outputInfo = {
     chainInfo: {
