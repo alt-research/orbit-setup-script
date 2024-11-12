@@ -9,14 +9,14 @@ export interface RuntimeState {
 
 interface EtherSent {
   batchPoster: boolean
-  staker: boolean
+  stakers: boolean[]
 }
 
 export const defaultRunTimeState: RuntimeState = {
   chainId: 0,
   etherSent: {
     batchPoster: false,
-    staker: false,
+    stakers: [false,false,false,false,false,false,false,false,false,false],
   },
   nativeTokenDeposit: false,
   tokenBridgeDeployed: false,

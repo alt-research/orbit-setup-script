@@ -375,7 +375,7 @@ export const createERC20Bridge = async (
       networkFeeReceiver: config.networkFeeReceiver,
       infrastructureFeeCollector: config.infrastructureFeeCollector,
       batchPoster: config.batchPoster,
-      staker: config.staker,
+      stakers: config.stakers,
       chainOwner: config.chainOwner,
       chainName: config.chainName,
       chainId: config.chainId,

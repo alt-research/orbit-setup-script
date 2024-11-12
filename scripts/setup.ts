@@ -115,20 +115,22 @@ async function main() {
       rs.etherSent.batchPoster = true
     }
 
-    if (!rs.etherSent.staker) {
-      console.log(
-        `Funding staker accounts on parent chain with ${INITIAL_FUND_AMOUNT_STAKER} ETH`
-      )
-      const tx2 = await signer.sendTransaction({
-        to: config.staker,
-        value: ethers.utils.parseEther(INITIAL_FUND_AMOUNT_STAKER),
-      })
-      console.log(`Transaction hash on parent chain: ${tx2.hash}`)
-      const receipt2 = await tx2.wait()
-      console.log(
-        `Transaction was mined in block ${receipt2.blockNumber} on parent chain`
-      )
-      rs.etherSent.staker = true
+    for (let index = 0; index < config.stakers.length; index++) {
+      if (!rs.etherSent.stakers[index]) {
+        console.log(
+          `Funding staker account ${config.stakers[index]} on parent chain with ${INITIAL_FUND_AMOUNT_STAKER} ETH`
+        )
+        const tx2 = await signer.sendTransaction({
+          to: config.stakers[index],
+          value: ethers.utils.parseEther(INITIAL_FUND_AMOUNT_STAKER),
+        })
+        console.log(`Transaction hash on parent chain: ${tx2.hash}`)
+        const receipt2 = await tx2.wait()
+        console.log(
+          `Transaction was mined in block ${receipt2.blockNumber} on parent chain`
+        )
+        rs.etherSent.stakers[index] = true
+      }      
     }
 
     if (!rs.nativeTokenDeposit) {

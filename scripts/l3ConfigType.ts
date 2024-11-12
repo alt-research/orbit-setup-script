@@ -14,7 +14,7 @@ export interface L3Config {
   infrastructureFeeCollector: string
   l1PricingRewardRecipient: string
   batchPoster: string
-  staker: string
+  stakers: string[]
   chainId: number
   chainName: string
   parentChainId: number
