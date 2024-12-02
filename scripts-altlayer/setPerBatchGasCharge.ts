@@ -1,7 +1,7 @@
 import { abi as ArbOwner__abi } from '@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbOwner.sol/ArbOwner.json'
 import { ethers } from 'ethers'
 import UpgradeExecutor from '@arbitrum/nitro-contracts/build/contracts/src/mocks/UpgradeExecutorMock.sol/UpgradeExecutorMock.json'
-import { getExecutorAddress } from './getExecutorAddress'
+import { getExecutorAddress } from './getExecutorAddressImpl'
 
 export async function main() {
   const privateKey = process.env.PRIVATE_KEY || ''

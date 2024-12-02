@@ -8,7 +8,7 @@ import {
   TOKEN_BRIDGE_CREATOR_Ethereum,
 } from '../scripts/createTokenBridge'
 import { getSigner } from './erc20TokenBridgeDeployment'
-import { getExecutorAddress } from './getExecutorAddress'
+import { getExecutorAddress } from './getExecutorAddressImpl'
 
 async function main() {
   // Read the environment variables
