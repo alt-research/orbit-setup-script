@@ -69,9 +69,6 @@ async function main() {
   } else {
     const nativeTokenContract = ERC20__factory.connect(nativeToken, l2Provider)
     const decimals = await nativeTokenContract.decimals()
-    if (decimals !== 18) {
-      throw new Error('We currently only support 18 decimals token')
-    }
     tx = await erc20Inbox.depositERC20(
       ethers.utils.parseUnits(amount, decimals)
     )
