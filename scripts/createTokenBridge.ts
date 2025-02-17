@@ -217,6 +217,7 @@ export const createNewTokenBridge = async (
     const setWethGatewayTxRequest =
       await createTokenBridgePrepareSetWethGatewayTransactionRequest({
         rollup: rollupAddress as Address,
+        rollupDeploymentBlockNumber: deployedAtBlockNumber,
         parentChainPublicClient,
         orbitChainPublicClient,
         account: deployer.address,
