@@ -4,7 +4,6 @@ import {
   L2Network,
   addCustomNetwork,
   constants as arbitrumSdkConstants,
-  registerCustomParentChain,
 } from '@arbitrum/sdk'
 import { IERC20Bridge__factory } from '@arbitrum/sdk/dist/lib/abi/factories/IERC20Bridge__factory'
 import { RollupAdminLogic__factory } from '@arbitrum/sdk/dist/lib/abi/factories/RollupAdminLogic__factory'
@@ -21,6 +20,7 @@ import {
   createTokenBridgePrepareTransactionReceipt,
   createTokenBridgePrepareSetWethGatewayTransactionRequest,
   createTokenBridgePrepareSetWethGatewayTransactionReceipt,
+  registerCustomParentChain,
 } from '@arbitrum/orbit-sdk'
 import { sanitizePrivateKey } from '@arbitrum/orbit-sdk/utils'
 
