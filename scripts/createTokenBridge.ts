@@ -93,7 +93,7 @@ async function getNativeToken({
   }
 }
 
-async function getChain(chainID) {
+async function getChain(chainID: number) {
   switch (chainID) {
     case arbitrum.id:
       return arbitrum;
@@ -134,7 +134,7 @@ export const createNewTokenBridge = async (
   rollupAddress: string,
   deployedAtBlockNumber: bigint,
   baseChainId: number,
-  tokenBridgeCreator?: string
+  tokenBridgeCreator: string
 ) => {
   try {
     getChain(baseChainId)
@@ -400,7 +400,7 @@ export const createERC20Bridge = async (
   childChainRpc: string,
   rollupAddress: string,
   baseChainId: number,
-  tokenBridgeCreator?: string
+  tokenBridgeCreator: string
 ) => {
   console.log('Creating token bridge for rollup', rollupAddress)
 
