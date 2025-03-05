@@ -42,6 +42,7 @@ async function main() {
     process.env.INITIAL_FUND_AMOUNT_BATCH_POSTER
   const INITIAL_FUND_AMOUNT_STAKER = process.env.INITIAL_FUND_AMOUNT_STAKER
   const setL1Price = process.env.SKIP_SET_L1_PRICE != "true"
+  const TOKEN_BRIDGE_CREATOR_ADDRESS = process.env.TOKEN_BRIDGE_CREATOR_ADDRESS
 
   if (
     !privateKey ||
@@ -175,7 +176,7 @@ async function main() {
       console.log(
         'Running tokenBridgeDeployment or erc20TokenBridge script to deploy token bridge contracts on parent chain and your Orbit chain 🌉🌉🌉🌉🌉'
       )
-      await createERC20Bridge(L2_RPC_URL, privateKey, L3_RPC_URL, config.rollup)
+      await createERC20Bridge(L2_RPC_URL, privateKey, L3_RPC_URL, config.rollup, config.parentChainId, TOKEN_BRIDGE_CREATOR_ADDRESS)
       rs.tokenBridgeDeployed = true
     }
     ////////////////////////////////

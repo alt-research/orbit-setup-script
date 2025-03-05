@@ -4,6 +4,7 @@ import {
   L2Network,
   addCustomNetwork,
   constants as arbitrumSdkConstants,
+  registerCustomParentChain,
 } from '@arbitrum/sdk'
 import { IERC20Bridge__factory } from '@arbitrum/sdk/dist/lib/abi/factories/IERC20Bridge__factory'
 import { RollupAdminLogic__factory } from '@arbitrum/sdk/dist/lib/abi/factories/RollupAdminLogic__factory'
@@ -24,6 +25,8 @@ import {
 import { sanitizePrivateKey } from '@arbitrum/orbit-sdk/utils'
 
 import { L3Config } from './l3ConfigType'
+
+import { arbitrum, arbitrumGoerli, arbitrumNova, arbitrumSepolia, holesky, sepolia, mainnet } from 'viem/chains';
 
 function createPublicClientFromChainInfo({
   id,
@@ -90,6 +93,27 @@ async function getNativeToken({
   }
 }
 
+async function getChain(chainID) {
+  switch (chainID) {
+    case arbitrum.id:
+      return arbitrum;
+    case arbitrumGoerli.id:
+      return arbitrumGoerli;
+    case arbitrumNova.id:
+      return arbitrumNova;
+    case arbitrumSepolia.id:
+      return arbitrumSepolia;
+    case holesky.id:
+      return holesky;
+    case sepolia.id:
+      return sepolia;
+    case mainnet.id:
+      return mainnet;
+    default:
+      throw new Error("Unsupported chainID");
+  }
+}
+
 /**
  * Steps:
  * - read network info from local container and register networks
@@ -108,8 +132,37 @@ export const createNewTokenBridge = async (
   baseChainDeployerKey: string,
   childChainRpc: string,
   rollupAddress: string,
-  deployedAtBlockNumber: bigint
+  deployedAtBlockNumber: bigint,
+  baseChainId: number,
+  tokenBridgeCreator?: string
 ) => {
+  try {
+    getChain(baseChainId)
+  }
+  catch (e) {
+    registerCustomParentChain({
+      id: baseChainId,
+      name: `My Chain`,
+      network: `my-chain`,
+      nativeCurrency: { 
+        name: 'Ether', 
+        symbol: 'ETH', 
+        decimals: 18
+      },
+      rpcUrls: {
+        public: { 
+          http: [baseChainRpc] },
+          default: { http: [baseChainRpc] 
+        },
+      },
+      // the following contract addresses have to be provided
+      contracts: {
+        rollupCreator: { address: '0x2000000000000000000000000000000000000000' },
+        tokenBridgeCreator: { address: tokenBridgeCreator },
+      },
+    })
+  }
+
   const l1Provider = new JsonRpcProvider(baseChainRpc)
   const l1NetworkInfo = await l1Provider.getNetwork()
 
@@ -345,7 +398,9 @@ export const createERC20Bridge = async (
   baseChainRpc: string,
   baseChainDeployerKey: string,
   childChainRpc: string,
-  rollupAddress: string
+  rollupAddress: string,
+  baseChainId: number,
+  tokenBridgeCreator?: string
 ) => {
   console.log('Creating token bridge for rollup', rollupAddress)
 
@@ -361,7 +416,9 @@ export const createERC20Bridge = async (
     baseChainDeployerKey,
     childChainRpc,
     rollupAddress,
-    BigInt(config.deployedAtBlockNumber)
+    BigInt(config.deployedAtBlockNumber),
+    baseChainId,
+    tokenBridgeCreator
   )
   const NETWORK_FILE = 'network.json'
   fs.writeFileSync(
