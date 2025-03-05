@@ -158,7 +158,7 @@ export const createNewTokenBridge = async (
       // the following contract addresses have to be provided
       contracts: {
         rollupCreator: { address: '0x2000000000000000000000000000000000000000' },
-        tokenBridgeCreator: { address: tokenBridgeCreator },
+        tokenBridgeCreator: { address: tokenBridgeCreator as `0x${string}` },
       },
     })
   }
