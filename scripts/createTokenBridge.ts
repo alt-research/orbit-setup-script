@@ -137,7 +137,7 @@ export const createNewTokenBridge = async (
   tokenBridgeCreator: string
 ) => {
   try {
-    getChain(baseChainId)
+    await getChain(baseChainId)
   }
   catch (e) {
     registerCustomParentChain({
