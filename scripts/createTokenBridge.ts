@@ -2,14 +2,13 @@ import { JsonRpcProvider } from '@ethersproject/providers'
 import {
   L1Network,
   L2Network,
-  addCustomNetwork,
   constants as arbitrumSdkConstants,
 } from '@arbitrum/sdk'
 import { IERC20Bridge__factory } from '@arbitrum/sdk/dist/lib/abi/factories/IERC20Bridge__factory'
 import { RollupAdminLogic__factory } from '@arbitrum/sdk/dist/lib/abi/factories/RollupAdminLogic__factory'
 import * as fs from 'fs'
 import { constants } from 'ethers'
-import { defineChain, Chain, createPublicClient, http as httpTransport, Address } from 'viem'
+import { defineChain, createPublicClient, http, Address } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import {
   createRollupPrepareTransactionReceipt,
@@ -93,7 +92,7 @@ async function getNativeToken({
   }
 }
 
-async function getChain(chainID: number) {
+function getChain(chainID: number) {
   switch (chainID) {
     case arbitrum.id:
       return arbitrum;
@@ -136,37 +135,6 @@ export const createNewTokenBridge = async (
   baseChainId: number,
   tokenBridgeCreator: string
 ) => {
-  let parentChain: Chain = {}
-
-  try {
-    parentChain = await getChain(baseChainId)
-    parentChain.rpcUrls.default.http[0] = config.common.parentChainNodeUrl || parentChain.rpcUrls.default.http[0]
-  }
-  catch (e) {
-    parentChain = {
-      id: baseChainId,
-      name: `My Chain`,
-      network: `my-chain`,
-      nativeCurrency: { 
-        name: 'Ether', 
-        symbol: 'ETH', 
-        decimals: 18
-      },
-      rpcUrls: {
-        public: { 
-          http: [baseChainRpc] },
-          default: { http: [baseChainRpc] 
-        },
-      },
-      // the following contract addresses have to be provided
-      contracts: {
-        rollupCreator: { address: '0x2000000000000000000000000000000000000000' },
-        tokenBridgeCreator: { address: tokenBridgeCreator as `0x${string}` },
-      },
-    }
-    registerCustomParentChain(parentChain)
-  }
-
   const l1Provider = new JsonRpcProvider(baseChainRpc)
   const l1NetworkInfo = await l1Provider.getNetwork()
 
@@ -176,10 +144,11 @@ export const createNewTokenBridge = async (
   const deployer = privateKeyToAccount(sanitizePrivateKey(baseChainDeployerKey))
   const rollup = RollupAdminLogic__factory.connect(rollupAddress, l1Provider)
 
-  const parentChainPublicClient = createPublicClient({
-    chain: parentChain,
-    transport: httpTransport(),
-  });
+  const parentChainPublicClient = createPublicClientFromChainInfo({
+    id: l1NetworkInfo.chainId,
+    name: l1NetworkInfo.name,
+    rpcUrl: baseChainRpc,
+  })
 
   const orbitChainPublicClient = createPublicClientFromChainInfo({
     id: l2NetworkInfo.chainId,
@@ -202,6 +171,7 @@ export const createNewTokenBridge = async (
       nativeToken,
       owner: deployer.address,
       publicClient: parentChainPublicClient,
+      tokenBridgeCreatorAddressOverride: tokenBridgeCreator as `0x${string}`
     }
 
     const enoughCustomFeeTokenAllowance =
@@ -242,6 +212,7 @@ export const createNewTokenBridge = async (
     parentChainPublicClient,
     orbitChainPublicClient,
     account: deployer.address,
+    tokenBridgeCreatorAddressOverride: tokenBridgeCreator as `0x${string}`
   })
 
   // submit tx
@@ -282,6 +253,7 @@ export const createNewTokenBridge = async (
             percentIncrease: 200n,
           },
         },
+        tokenBridgeCreatorAddressOverride: tokenBridgeCreator as `0x${string}`,
       })
 
     // sign and send the transaction
