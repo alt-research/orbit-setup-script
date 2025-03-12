@@ -9,7 +9,7 @@ import { IERC20Bridge__factory } from '@arbitrum/sdk/dist/lib/abi/factories/IERC
 import { RollupAdminLogic__factory } from '@arbitrum/sdk/dist/lib/abi/factories/RollupAdminLogic__factory'
 import * as fs from 'fs'
 import { constants } from 'ethers'
-import { defineChain, createPublicClient, http, Address } from 'viem'
+import { defineChain, Chain, createPublicClient, http as httpTransport, Address } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import {
   createRollupPrepareTransactionReceipt,
@@ -136,11 +136,14 @@ export const createNewTokenBridge = async (
   baseChainId: number,
   tokenBridgeCreator: string
 ) => {
+  let parentChain: Chain = {}
+
   try {
-    await getChain(baseChainId)
+    parentChain = await getChain(baseChainId)
+    parentChain.rpcUrls.default.http[0] = config.common.parentChainNodeUrl || parentChain.rpcUrls.default.http[0]
   }
   catch (e) {
-    registerCustomParentChain({
+    parentChain = {
       id: baseChainId,
       name: `My Chain`,
       network: `my-chain`,
@@ -160,7 +163,8 @@ export const createNewTokenBridge = async (
         rollupCreator: { address: '0x2000000000000000000000000000000000000000' },
         tokenBridgeCreator: { address: tokenBridgeCreator as `0x${string}` },
       },
-    })
+    }
+    registerCustomParentChain(parentChain)
   }
 
   const l1Provider = new JsonRpcProvider(baseChainRpc)
@@ -172,11 +176,10 @@ export const createNewTokenBridge = async (
   const deployer = privateKeyToAccount(sanitizePrivateKey(baseChainDeployerKey))
   const rollup = RollupAdminLogic__factory.connect(rollupAddress, l1Provider)
 
-  const parentChainPublicClient = createPublicClientFromChainInfo({
-    id: l1NetworkInfo.chainId,
-    name: l1NetworkInfo.name,
-    rpcUrl: baseChainRpc,
-  })
+  const parentChainPublicClient = createPublicClient({
+    chain: parentChain,
+    transport: httpTransport(),
+  });
 
   const orbitChainPublicClient = createPublicClientFromChainInfo({
     id: l2NetworkInfo.chainId,
