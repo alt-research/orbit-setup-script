@@ -31,10 +31,12 @@ function createPublicClientFromChainInfo({
   id,
   name,
   rpcUrl,
+  tokenBridgeCreator
 }: {
   id: number
   name: string
   rpcUrl: string
+  tokenBridgeCreator: string
 }) {
   const chain = defineChain({
     id: id,
@@ -50,6 +52,10 @@ function createPublicClientFromChainInfo({
       },
     },
     testnet: true,
+    contracts: {
+      rollupCreator: { address: '0x2000000000000000000000000000000000000000' },
+      tokenBridgeCreator: { address: tokenBridgeCreator as `0x${string}` },
+    },
   })
 
   return createPublicClient({ chain, transport: http(rpcUrl, {timeout: 120_000}) })
@@ -175,12 +181,14 @@ export const createNewTokenBridge = async (
     id: l1NetworkInfo.chainId,
     name: l1NetworkInfo.name,
     rpcUrl: baseChainRpc,
+    tokenBridgeCreator: tokenBridgeCreator,
   })
 
   const orbitChainPublicClient = createPublicClientFromChainInfo({
     id: l2NetworkInfo.chainId,
     name: l2NetworkInfo.name,
     rpcUrl: childChainRpc,
+    tokenBridgeCreator: tokenBridgeCreator,
   })
 
   const nativeToken = await getNativeToken({
