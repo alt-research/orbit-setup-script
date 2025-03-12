@@ -135,6 +135,33 @@ export const createNewTokenBridge = async (
   baseChainId: number,
   tokenBridgeCreator: string
 ) => {
+  try {
+    getChain(baseChainId)
+  }
+  catch (e) {
+    registerCustomParentChain({
+      id: baseChainId,
+      name: `My Chain`,
+      network: `my-chain`,
+      nativeCurrency: { 
+        name: 'Ether', 
+        symbol: 'ETH', 
+        decimals: 18
+      },
+      rpcUrls: {
+        public: { 
+          http: [baseChainRpc] },
+          default: { http: [baseChainRpc] 
+        },
+      },
+      // the following contract addresses have to be provided
+      contracts: {
+        rollupCreator: { address: '0x2000000000000000000000000000000000000000' },
+        tokenBridgeCreator: { address: tokenBridgeCreator as `0x${string}` },
+      },
+    })
+  }
+
   const l1Provider = new JsonRpcProvider(baseChainRpc)
   const l1NetworkInfo = await l1Provider.getNetwork()
 
