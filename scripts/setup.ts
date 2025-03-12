@@ -196,7 +196,7 @@ async function main() {
       console.log(
         'Transferring ownership on L3, from rollup owner to upgrade executor 🔃🔃🔃'
       )
-      await transferOwner(privateKey, L2Provider, L3Provider)
+      await transferOwner(privateKey, L2Provider, L3Provider, TOKEN_BRIDGE_CREATOR_ADDRESS)
       rs.transferOwnership = true
     }
   } catch (error) {

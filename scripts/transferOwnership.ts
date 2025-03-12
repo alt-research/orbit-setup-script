@@ -5,7 +5,6 @@ import UpgradeExecutor from '@arbitrum/nitro-contracts/build/contracts/src/mocks
 import ArbOwner from '@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbOwner.sol/ArbOwner.json'
 import fs from 'fs'
 import { L3Config } from './l3ConfigType'
-import { TOKEN_BRIDGE_CREATOR_Arb_Sepolia, TOKEN_BRIDGE_CREATOR_Sepolia, TOKEN_BRIDGE_CREATOR_Arb_One, TOKEN_BRIDGE_CREATOR_Holesky, TOKEN_BRIDGE_CREATOR_Ethereum } from './createTokenBridge'
 import L1AtomicTokenBridgeCreator from '@arbitrum/token-bridge-contracts/build/contracts/contracts/tokenbridge/ethereum/L1AtomicTokenBridgeCreator.sol/L1AtomicTokenBridgeCreator.json'
 
 export const getSigner = (provider: JsonRpcProvider, key?: string) => {
@@ -19,29 +18,13 @@ const ARB_OWNER_ADDRESS = '0x0000000000000000000000000000000000000070'
 export async function transferOwner(
   privateKey: string,
   l2Provider: ethers.providers.JsonRpcProvider,
-  l3Provider: ethers.providers.JsonRpcProvider
+  l3Provider: ethers.providers.JsonRpcProvider,
+  tokenBridgeCreator: string
 ) {
   //Generating l2 and l3 deployer signers from privatekey and providers
   const l3Deployer = getSigner(l3Provider, privateKey)
   //fetching chain id of parent chain
   const l2ChainId = (await l2Provider.getNetwork()).chainId
-
-  let TOKEN_BRIDGE_CREATOR
-  if (l2ChainId === 421614) {
-    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_Sepolia
-  } else if (l2ChainId === 11155111) {
-    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Sepolia
-  } else if (l2ChainId === 42161) {
-    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Arb_One
-  } else if (l2ChainId === 17000) {
-    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Holesky
-  } else if (l2ChainId === 1) {
-    TOKEN_BRIDGE_CREATOR = TOKEN_BRIDGE_CREATOR_Ethereum
-  } else {
-    throw new Error(
-      'The Base Chain you have provided is not supported, please put RPC for Arb Sepolia, Sepolia, Holesky, Arb One, or Ethereum'
-    )
-  }
 
   // Read the JSON configuration
   const configRaw = fs.readFileSync(
@@ -51,7 +34,7 @@ export async function transferOwner(
   const config: L3Config = JSON.parse(configRaw)
 
   const L1AtomicTokenBridgeCreator__factory = new ethers.Contract(
-    TOKEN_BRIDGE_CREATOR,
+    tokenBridgeCreator,
     L1AtomicTokenBridgeCreator.abi,
     l2Provider
   )
