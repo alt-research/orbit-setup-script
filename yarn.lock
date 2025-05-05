@@ -32,10 +32,10 @@
     "@openzeppelin/contracts-upgradeable" "4.5.2"
     patch-package "^6.4.7"
 
-"@arbitrum/orbit-sdk@^0.21.5":
-  version "0.21.5"
-  resolved "https://registry.yarnpkg.com/@arbitrum/orbit-sdk/-/orbit-sdk-0.21.5.tgz#957c91f9ceed5aff26b33b0f4624e31b88db6383"
-  integrity sha512-HlAtdxtkzZKkATfh2zG715AIYoPZ94W/wSc2SnXkwFIWRjY5EthYcEZ8mL0XTFX0ym0tK4rCNA2WaILEIsuoGA==
+"@arbitrum/orbit-sdk@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@arbitrum/orbit-sdk/-/orbit-sdk-0.23.0.tgz#408d40751a2dec3ac837fd0a2ed494bfe5c74c81"
+  integrity sha512-z1D2id5EYJyoS14yxTAstsSHKpWC+mGJXxed+r4ADJF0luWyFUNdMSN+eGzpIG36zR4SXVR2awJkJVAil2ZeTQ==
   dependencies:
     "@arbitrum/sdk" "^4.0.2"
     "@arbitrum/token-bridge-contracts" "^1.2.2"
@@ -65,7 +65,7 @@
     async-mutex "^0.4.0"
     ethers "^5.1.0"
 
-"@arbitrum/token-bridge-contracts@^1.2.1", "@arbitrum/token-bridge-contracts@^1.2.2":
+"@arbitrum/token-bridge-contracts@^1.2.2", "@arbitrum/token-bridge-contracts@^1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@arbitrum/token-bridge-contracts/-/token-bridge-contracts-1.2.3.tgz#b08b22b5dcac255149a10bd8b66b0b55be7f3329"
   integrity sha512-Gpw0vGv7oS9tgPMb0JfWW6Ve7yOvcmTdfhuxCgvCOG6ntVoJVhB030RhhfIV9jSpDatQi0T1Jqq2RIMXJIxqyQ==
