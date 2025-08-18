@@ -442,7 +442,7 @@ export const createERC20Bridge = async (
       minL2BaseFee: config.minL2BaseFee,
       networkFeeReceiver: config.networkFeeReceiver,
       infrastructureFeeCollector: config.infrastructureFeeCollector,
-      batchPoster: config.batchPoster,
+      batchPoster: config.batchPosters[0],
       staker: config.stakers[0],
       chainOwner: config.chainOwner,
       chainName: config.chainName,
