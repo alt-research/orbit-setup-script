@@ -105,7 +105,7 @@ async function main() {
         `Funding batch-poster accounts on parent chain with ${INITIAL_FUND_AMOUNT_BATCH_POSTER} ETH`
       )
       const tx1 = await signer.sendTransaction({
-        to: config.batchPoster,
+        to: config.batchPosters[0],
         value: ethers.utils.parseEther(INITIAL_FUND_AMOUNT_BATCH_POSTER),
       })
       console.log(`Transaction hash on parent chain: ${tx1.hash}`)
